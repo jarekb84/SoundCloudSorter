@@ -4,7 +4,7 @@ chrome.extension.sendMessage({}, function (response) {
             clearInterval(readyStateCheckInterval);            
             var searchResultsLoaded = setInterval(function () {								
                 if ($('.searchList__item').length) {
-                    clearInterval(searchResultsLoaded); 
+                    clearInterval(searchResultsLoaded);  
 					
                     $(document).ready(function () {			
 						var actionTemplate =[
