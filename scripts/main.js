@@ -16,6 +16,7 @@ chrome.extension.sendMessage({}, function (response) {
 								'<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="likes" 		class="action sc-button sc-button-small sc-button-responsive sc-button-like">Likes</button>',
 								'<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="reposts" 	class="action sc-button sc-button-small sc-button-responsive sc-button-repost">Reposts</button>',
 								'<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="comments" 	class="action sc-button sc-button-small sc-button-responsive sc-button-comments"><i class="icon-comment"></i>Comments</button>',								
+								'<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="duration" 	class="action sc-button sc-button-small sc-button-responsive sc-button-duration">Duration</button>',
 							'</div>',
 							'<hr />',
 						].join().replace(new RegExp(",", "g"), '');
@@ -23,6 +24,7 @@ chrome.extension.sendMessage({}, function (response) {
 						$('.search__header').after(actionTemplate);
 
                         var soundList = [];
+						
                         var Sound = function () {
                                 this.element = null;
                                 this.title = null;
@@ -31,13 +33,46 @@ chrome.extension.sendMessage({}, function (response) {
                                 this.likes = 0;
                                 this.reposts = 0;
                                 this.comments = 0;
+								this.duration = 0;
+								
+								this.setDuration = function(dur) {
+									var tempDuration = dur.split('.')
+										, days = 0
+										, hours = 0
+										, min = 0
+										, sec = 0;
+									
+									switch (tempDuration.length) {
+									case 4:
+										days = parseInt(tempDuration[0],10);
+										hours = parseInt(tempDuration[1],10);
+										min = parseInt(tempDuration[2],10);
+										sec = parseInt(tempDuration[3],10);
+										break;
+									case 3:
+										hours = parseInt(tempDuration[0],10);
+										min = parseInt(tempDuration[1],10);
+										sec = parseInt(tempDuration[2],10);										
+										break;
+									case 2:										
+										min = parseInt(tempDuration[0],10);
+										sec = parseInt(tempDuration[1],10);										
+										break;
+									case 1:																	
+										sec = parseInt(tempDuration[0],10);
+										
+										break;																											
+									}
+									
+									this.duration = (days * 86400) + (hours * 3600) + (min * 60) + (sec);									
+								}								
                             };
                        
 						
 						function populateSoundList() {
 							soundList.length = 0; //reset array incase user loaded more content
 							$('.searchList__item').each(function () {
-								var sound = new Sound();
+								var sound = new Sound();									
 
 								sound.element = this;
 								sound.title = $(this).find('.soundTitle__title').text();
@@ -46,8 +81,9 @@ chrome.extension.sendMessage({}, function (response) {
 								sound.likes = $(this).find('.sc-ministats-likes a').children().eq(1).text().replace(new RegExp(",", "g"), '');
 								sound.reposts = $(this).find('.sc-ministats-reposts a').children().eq(1).text().replace(new RegExp(",", "g"), '');
 								sound.comments = $(this).find('.sc-ministats-comments a').children().eq(1).text().replace(new RegExp(",", "g"), '');
+								sound.setDuration( $(this).find('.timeIndicator__total').children().eq(1).text());
 
-								soundList.push(sound);								
+								soundList.push(sound);											
 							});					
 						}
 
@@ -83,16 +119,15 @@ chrome.extension.sendMessage({}, function (response) {
                             }
 
                             if (lastSortedBy === 'min') {
-                                lastSortedBy = 'max'
-                                
+                                lastSortedBy = 'max'                                
                             } else {
                                 lastSortedBy = 'min'
 								soundList.reverse();
                             }
+							
 							$('.action').data('lastsortedby', 'min'); // resets all to ensure that default sort is max desc when switching between sorts
                             $(this).data('lastsortedby', lastSortedBy);
-
-							console.log(soundProperty);
+							
                             $(soundList).each(function () {
                                 var sound = this;
 								
@@ -102,13 +137,11 @@ chrome.extension.sendMessage({}, function (response) {
                                 //$(sound.element).slideUp(500, function () {
                                 //    $(sound.element).prependTo(".searchList").slideDown(500);
                                 //});
-                            });
-							//$('.searchList__item').show();							
+                            });												
                         });
                     });
                 }
-            }, 10);
-            // ----------------------------------------------------------
+            }, 10);            
         }
     }, 10);
 });
