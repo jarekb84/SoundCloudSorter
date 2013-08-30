@@ -11,12 +11,12 @@ chrome.extension.sendMessage({}, function (response) {
 							'<div class="actions sc-button-group">',
 								'<span style="float: left; margin-right:1em;">Sort By</span>',
 								'<button data-lastSortedBy="min" data-type="string" data-soundProperty="title"  	class="action sc-button sc-button-small sc-button-responsive sc-button-title">Title</button>',
-								'<button data-lastSortedBy="min" data-type="date" 	data-soundProperty="time" 		class="action sc-button sc-button-small sc-button-responsive sc-button-date">Date</button>',
-								'<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="plays" 		class="action sc-button sc-button-small sc-button-responsive sc-button-download">Plays</button>',
+								'<button data-lastSortedBy="min" data-type="date" 	data-soundProperty="time" 		class="action sc-button sc-button-small sc-button-responsive sc-button-date"><span class="sc-icon sc-icon-date sc-icon-medium"></span>Date</button>',
+								'<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="plays" 		class="action sc-button sc-button-small sc-button-responsive ">Plays</button>',
 								'<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="likes" 		class="action sc-button sc-button-small sc-button-responsive sc-button-like">Likes</button>',
 								'<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="reposts" 	class="action sc-button sc-button-small sc-button-responsive sc-button-repost">Reposts</button>',
-								'<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="comments" 	class="action sc-button sc-button-small sc-button-responsive sc-button-comments"><i class="icon-comment"></i>Comments</button>',								
-								'<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="duration" 	class="action sc-button sc-button-small sc-button-responsive sc-button-duration">Duration</button>',
+								'<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="comments" 	class="action sc-button sc-button-small sc-button-responsive sc-button-comments" ><span class="sc-icon sc-icon-comment sc-icon-medium"></span>Comments</button>',								
+								'<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="duration" 	class="action sc-button sc-button-small sc-button-responsive sc-button-duration"><span class="sc-icon sc-icon-duration sc-icon-medium"></span>Duration</button>',
 							'</div>',
 							'<hr />',
 						].join().replace(new RegExp(",", "g"), '');
@@ -89,6 +89,8 @@ chrome.extension.sendMessage({}, function (response) {
 
                         $('.action').on('click', function () {
 							
+							$('.actions').children().removeClass('sc-button-active');
+							$(this).addClass('sc-button-active')
 							populateSoundList();
 							
                             var soundProperty = $(this).data('soundproperty');

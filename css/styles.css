@@ -1,3 +1,7 @@
 .searchList__item {
 	list-style: none;
 }
+
+.actions .sc-icon-medium {	
+	height:15px;
+}
