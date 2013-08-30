@@ -17,6 +17,7 @@ chrome.extension.sendMessage({}, function (response) {
 								'<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="reposts" 	class="action sc-button sc-button-small sc-button-responsive sc-button-repost">Reposts</button>',
 								'<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="comments" 	class="action sc-button sc-button-small sc-button-responsive sc-button-comments" ><span class="sc-icon sc-icon-comment sc-icon-medium"></span>Comments</button>',								
 								'<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="duration" 	class="action sc-button sc-button-small sc-button-responsive sc-button-duration"><span class="sc-icon sc-icon-duration sc-icon-medium"></span>Duration</button>',
+								'<button data-lastSortedBy="min" data-type="string" data-soundProperty="tag" 		class="action sc-button sc-button-small sc-button-responsive sc-button-tag">Tag</button>',
 							'</div>',
 							'<hr />',
 						].join().replace(new RegExp(",", "g"), '');
@@ -34,6 +35,7 @@ chrome.extension.sendMessage({}, function (response) {
                                 this.reposts = 0;
                                 this.comments = 0;
 								this.duration = 0;
+								this.tag = null;
 								
 								this.setDuration = function(dur) {
 									var tempDuration = dur.split('.')
@@ -82,8 +84,14 @@ chrome.extension.sendMessage({}, function (response) {
 								sound.reposts = $(this).find('.sc-ministats-reposts a').children().eq(1).text().replace(new RegExp(",", "g"), '');
 								sound.comments = $(this).find('.sc-ministats-comments a').children().eq(1).text().replace(new RegExp(",", "g"), '');
 								sound.setDuration( $(this).find('.timeIndicator__total').children().eq(1).text());
+								sound.tag = $(this).find('.soundTitle__tag').text().toLowerCase().trim();
+								
+								if(sound.tag.length === 0) {
+									// hack to sort sounds without a tag last
+									sound.tag = 'zzzzzzz';
+								}
 
-								soundList.push(sound);											
+								soundList.push(sound);								
 							});					
 						}
 
@@ -133,9 +141,8 @@ chrome.extension.sendMessage({}, function (response) {
                             $(soundList).each(function () {
                                 var sound = this;
 								
-								$(sound.element).prependTo(".searchList")
-								//console.log(sound);
-								//console.log(sound[soundProperty]);
+								$(sound.element).prependTo(".searchList");
+																
                                 //$(sound.element).slideUp(500, function () {
                                 //    $(sound.element).prependTo(".searchList").slideDown(500);
                                 //});
