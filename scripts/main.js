@@ -1,42 +1,7 @@
+/*global chrome, _*/
+//noinspection JSUnresolvedVariable,JSUnresolvedFunction
 chrome.extension.sendMessage({}, function () {
-
-    var searchResultsLoaded = setInterval(function () {
-        if ($('.searchList__item, .soundList__item').length) {
-            clearInterval(searchResultsLoaded);
-
-            init();
-        }
-    }, 100);
-
-    function pathHandler(changeFunction) {
-        this.oldPath = window.location.pathname;
-        //this.Check;
-
-        var that = this;
-        var detect = function () {
-            if (that.oldPath != window.location.pathname) {
-                that.oldPath = window.location.pathname;
-                changeFunction();
-            }
-        };
-        this.Check = setInterval(function () {
-            detect()
-        }, 100);
-    }
-
-    function init() {
-        $(document).ready(function () {
-            insertSortActions();
-            attachActionEvents();
-
-            pathHandler(function () {
-                insertSortActions();
-                attachActionEvents();
-            });
-        });
-    }
-
-    var soundList = [];
+    "use strict";
 
     var Sound = function () {
         this.element = null;
@@ -50,131 +15,72 @@ chrome.extension.sendMessage({}, function () {
         this.tag = null;
 
         this.setDuration = function (dur) {
-            var tempDuration = dur.split('.')
-                , days = 0
-                , hours = 0
-                , min = 0
-                , sec = 0;
+            var tempDuration = dur.split('.'),
+                days = 0,
+                hours = 0,
+                min = 0,
+                sec = 0;
 
             switch (tempDuration.length) {
-                case 4:
-                    days = parseInt(tempDuration[0], 10);
-                    hours = parseInt(tempDuration[1], 10);
-                    min = parseInt(tempDuration[2], 10);
-                    sec = parseInt(tempDuration[3], 10);
-                    break;
-                case 3:
-                    hours = parseInt(tempDuration[0], 10);
-                    min = parseInt(tempDuration[1], 10);
-                    sec = parseInt(tempDuration[2], 10);
-                    break;
-                case 2:
-                    min = parseInt(tempDuration[0], 10);
-                    sec = parseInt(tempDuration[1], 10);
-                    break;
-                case 1:
-                    sec = parseInt(tempDuration[0], 10);
+            case 4:
+                days = parseInt(tempDuration[0], 10);
+                hours = parseInt(tempDuration[1], 10);
+                min = parseInt(tempDuration[2], 10);
+                sec = parseInt(tempDuration[3], 10);
+                break;
+            case 3:
+                hours = parseInt(tempDuration[0], 10);
+                min = parseInt(tempDuration[1], 10);
+                sec = parseInt(tempDuration[2], 10);
+                break;
+            case 2:
+                min = parseInt(tempDuration[0], 10);
+                sec = parseInt(tempDuration[1], 10);
+                break;
+            case 1:
+                sec = parseInt(tempDuration[0], 10);
 
-                    break;
+                break;
             }
 
-            this.duration = (days * 86400) + (hours * 3600) + (min * 60) + (sec);
-        }
+            this.duration = (days * 86400) + (hours * 3600) + (min * 60) + sec;
+        };
     };
 
-    function attachActionEvents() {
-        $('.action').on('click', function () {
-
-            $('.sorterActions').children().removeClass('sc-button-active');
-            $(this).addClass('sc-button-active');
-
-            populateSoundList();
-
-            var soundProperty = $(this).data('soundproperty');
-            var lastSortedBy = $(this).data('lastsortedby');
-            var type = $(this).data('type');
-
-            switch (type) {
-                case "string":
-                    soundList = _.sortBy(soundList, function (sound) {
-                        return sound[soundProperty];
-                    });
-                    soundList.reverse();
-                    break;
-                case "date":
-                    soundList = _.sortBy(soundList, function (sound) {
-                        return sound[soundProperty];
-                    });
-                    break;
-                case "int":
-                    soundList = _.sortBy(soundList, function (sound) {
-                        return Math.min(parseInt(sound[soundProperty], 10));
-                    });
-                    break;
-                default:
-                    soundList = _.sortBy(soundList, function (sound) {
-                        return sound[soundProperty];
-                    });
-            }
-
-            if (lastSortedBy === 'min') {
-                lastSortedBy = 'max'
-            } else {
-                lastSortedBy = 'min';
-                soundList.reverse();
-            }
-
-            $('.action').data('lastsortedby', 'min'); // resets all to ensure that default sort is max desc when switching between sorts
-            $(this).data('lastsortedby', lastSortedBy);
-
-            var $searchList = $('.searchList');
-            var $tagList = $('.tagsList__list');
-            var classToAttach;
-
-            if ($searchList.length > 0) {
-                classToAttach = '.searchList';
-            } else if ($tagList.length > 0) {
-                classToAttach = '.tagsList__list';
-            }
-
-            $(soundList).each(function () {
-                var sound = this;
-
-                $(sound.element).prependTo(classToAttach);
+    function sortItems(itemList, itemProperty, propertyType, lastSortedBy) {
+        switch (propertyType) {
+        case "string":
+            itemList = _.sortBy(itemList, function (item) {
+                return item[itemProperty];
             });
-        });
-    }
-
-    function insertSortActions() {
-        $('.sorterActions').remove(); //clear out if they already exist;
-
-        var actionTemplate = [
-            '<div class="sorterActions sc-button-group">',
-                '<span style="float: left; margin-right:1em;">Sort By</span>',
-                '<button data-lastSortedBy="min" data-type="string" data-soundProperty="title"  	class="action sc-button sc-button-small sc-button-responsive sc-button-title">Title</button>',
-                '<button data-lastSortedBy="min" data-type="date" 	data-soundProperty="time" 		class="action sc-button sc-button-small sc-button-responsive sc-button-date"><span class="sc-icon sc-icon-date sc-icon-medium"></span>Date</button>',
-                '<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="plays" 		class="action sc-button sc-button-small sc-button-responsive ">Plays</button>',
-                '<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="likes" 		class="action sc-button sc-button-small sc-button-responsive sc-button-like">Likes</button>',
-                '<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="reposts" 	class="action sc-button sc-button-small sc-button-responsive sc-button-repost">Reposts</button>',
-                '<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="comments" 	class="action sc-button sc-button-small sc-button-responsive sc-button-comments" ><span class="sc-icon sc-icon-comment sc-icon-medium"></span>Comments</button>',
-                '<button data-lastSortedBy="min" data-type="int" 	data-soundProperty="duration" 	class="action sc-button sc-button-small sc-button-responsive sc-button-duration"><span class="sc-icon sc-icon-duration sc-icon-medium"></span>Duration</button>',
-                '<button data-lastSortedBy="min" data-type="string" data-soundProperty="tag" 		class="action sc-button sc-button-small sc-button-responsive sc-button-tag">Tag</button>',
-                '<hr />',
-            '</div>'
-        ].join().replace(new RegExp(",", "g"), '');
-
-        var $searchHeader = $('.search__header');
-        var $tagsList = $('.tagsList__list');
-
-        if ($searchHeader.length > 0) {
-            $searchHeader.after(actionTemplate);
-        } else if ($tagsList.length > 0) {
-            $tagsList.before(actionTemplate);
+            itemList.reverse();
+            break;
+        case "date":
+            itemList = _.sortBy(itemList, function (item) {
+                return item[itemProperty];
+            });
+            break;
+        case "int":
+            itemList = _.sortBy(itemList, function (item) {
+                return Math.min(parseInt(item[itemProperty], 10));
+            });
+            break;
+        default:
+            itemList = _.sortBy(itemList, function (item) {
+                return item[itemProperty];
+            });
+            break;
         }
+
+        if (lastSortedBy === 'max') {
+            itemList.reverse();
+        }
+
+        //return itemList;
     }
 
-    function populateSoundList() {
-        soundList.length = 0; //reset array in case user loaded more content
+    function populateSoundList(itemList) {
+        itemList.length = 0; //reset array in case user loaded more content
         $('.searchList__item,.soundList__item').each(function () {
             var sound = new Sound();
 
@@ -193,9 +99,122 @@ chrome.extension.sendMessage({}, function () {
                 sound.tag = 'zzzzzzz';
             }
 
-            soundList.push(sound);
+            itemList.push(sound);
         });
     }
 
+    function attachItemsToDom(itemsToAttach) {
+        var $searchList = $('.searchList'),
+            $tagList = $('.tagsList__list'),
+            elementToAttach;
 
+        if ($searchList.length > 0) {
+            elementToAttach = '.searchList';
+        } else if ($tagList.length > 0) {
+            elementToAttach = '.tagsList__list';
+        }
+
+        $(itemsToAttach).each(function () {
+            var item = this;
+
+            $(item.element).prependTo(elementToAttach);
+        });
+    }
+
+    function updateLastSortedBy() {
+        var lastSortedBy = $(this).data('lastsortedby');
+
+        if (lastSortedBy === 'min') {
+            lastSortedBy = 'max';
+        } else {
+            lastSortedBy = 'min';
+        }
+
+        // resets all to ensure that default sort is max desc when switching between sorts
+        $('.action').data('lastsortedby', 'min');
+        $(this).data('lastsortedby', lastSortedBy);
+
+        return lastSortedBy;
+    }
+
+    function attachActionEvents() {
+        $('.action').on('click', function () {
+            $('.sorterActions').children().removeClass('sc-button-active');
+            $(this).addClass('sc-button-active');
+
+            var soundProperty = $(this).data('soundproperty'),
+                propertyType = $(this).data('type'),
+                lastSortedBy = updateLastSortedBy(),
+                itemList = [];
+
+            populateSoundList(itemList);
+            sortItems(itemList, soundProperty, propertyType, lastSortedBy);
+            attachItemsToDom(itemList);
+        });
+    }
+
+    function insertSortActions() {
+        $('.sorterActions').remove(); //clear out if they already exist;
+        var $searchHeader = $('.search__header'),
+            $tagsList = $('.tagsList__list'),
+            actionTemplate;
+
+        actionTemplate = [
+            '<div class="sorterActions sc-button-group">',
+            '<span style="float: left; margin-right:1em;">Sort By</span>',
+            '<button data-lastSortedBy="min" data-type="string" data-soundProperty="title"      class="action sc-button sc-button-small sc-button-responsive sc-button-title">Title</button>',
+            '<button data-lastSortedBy="min" data-type="date"   data-soundProperty="time"       class="action sc-button sc-button-small sc-button-responsive sc-button-date"><span class="sc-icon sc-icon-date sc-icon-medium"></span>Date</button>',
+            '<button data-lastSortedBy="min" data-type="int"    data-soundProperty="plays"      class="action sc-button sc-button-small sc-button-responsive ">Plays</button>',
+            '<button data-lastSortedBy="min" data-type="int"    data-soundProperty="likes"      class="action sc-button sc-button-small sc-button-responsive sc-button-like">Likes</button>',
+            '<button data-lastSortedBy="min" data-type="int"    data-soundProperty="reposts"    class="action sc-button sc-button-small sc-button-responsive sc-button-repost">Reposts</button>',
+            '<button data-lastSortedBy="min" data-type="int"    data-soundProperty="comments"   class="action sc-button sc-button-small sc-button-responsive sc-button-comments" ><span class="sc-icon sc-icon-comment sc-icon-medium"></span>Comments</button>',
+            '<button data-lastSortedBy="min" data-type="int"    data-soundProperty="duration"   class="action sc-button sc-button-small sc-button-responsive sc-button-duration"><span class="sc-icon sc-icon-duration sc-icon-medium"></span>Duration</button>',
+            '<button data-lastSortedBy="min" data-type="string" data-soundProperty="tag"        class="action sc-button sc-button-small sc-button-responsive sc-button-tag">Tag</button>',
+            '<hr />',
+            '</div>'
+        ].join().replace(new RegExp(",", "g"), '');
+
+        if ($searchHeader.length > 0) {
+            $searchHeader.after(actionTemplate);
+        } else if ($tagsList.length > 0) {
+            $tagsList.before(actionTemplate);
+        }
+    }
+
+    function pathHandler(changeFunction) {
+        var oldPath = window.location.pathname,
+            detect,
+            check;
+
+        detect = function () {
+            if (oldPath !== window.location.pathname) {
+                oldPath = window.location.pathname;
+                changeFunction();
+            }
+        };
+
+        check = setInterval(function () {
+            detect();
+        }, 100);
+    }
+
+    function init() {
+        $(document).ready(function () {
+            insertSortActions();
+            attachActionEvents();
+
+            pathHandler(function () {
+                insertSortActions();
+                attachActionEvents();
+            });
+        });
+    }
+
+    var sortableContentLoaded = setInterval(function () {
+        if ($('.searchList__item, .soundList__item').length) {
+            clearInterval(sortableContentLoaded);
+
+            init();
+        }
+    }, 100);
 });
