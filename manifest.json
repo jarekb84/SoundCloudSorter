@@ -6,8 +6,8 @@
 	"page_action" :
 	{
 		"default_icon": {
-			"19": "icons/19.png",
-			"38": "icons/38.png"
+			"19": "img/icons/19.png",
+			"38": "img/icons/38.png"
 		},
 		"default_title" : "SAMPLE_TITLE",
 		"default_popup" : "fragments/popup.html"
@@ -21,9 +21,9 @@
 	}
 	],
 	"icons": {
-		"16": "icons/16.png",
-		"48": "icons/48.png",
-		"128": "icons/128.png"
+		"16": "img/icons/16.png",
+		"48": "img/icons/48.png",
+		"128": "img/icons/128.png"
 	},
 	"options_page" : "fancy-settings/source/index.html"
 }
