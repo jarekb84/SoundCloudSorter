@@ -1,6 +1,6 @@
 {
 	"name": "SoundCloud Sorter",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"manifest_version" : 2,
 	"description": "Lets you sort sound cloud search results by various properties.",
 	"page_action" :

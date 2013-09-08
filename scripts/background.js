@@ -3,7 +3,7 @@ var settings = new Store("settings", {
 });
 
 chrome.extension.onMessage.addListener(
-  function(request, sender, sendResponse) {
-  	chrome.pageAction.show(sender.tab.id);
-    sendResponse(settings.toObject());
-  });
+    function (request, sender, sendResponse) {
+        chrome.pageAction.show(sender.tab.id);
+        sendResponse(settings.toObject());
+    });
