@@ -9,7 +9,12 @@ chrome.extension.sendMessage({}, function () {
         // if the path doesn't begin with search or tags, then it's a user profile page
         // pattern is /username/sortableSet
         // getting third element, since splitting by / creates three items, first one being blank/null
-        if(currentPath.substring(1,7) !== "search" && currentPath.substring(1,4) !== "tags") {
+
+        if(currentPath.substring(1,7) === "search") {
+            currentPath = currentPath;
+        } else if (currentPath.substring(1,5) === "tags"){
+            currentPath = "/tags";
+        } else {
             currentPath = "/" + currentPath.split('/')[2];
         }
 
@@ -518,7 +523,7 @@ chrome.extension.sendMessage({}, function () {
     }
 
     var sortableContentLoaded = setInterval(function () {
-        if ($('.searchList__item, .soundList__item, .usersList__item, .groupsList__item').length) {
+        if ($(' .l-main .searchList__item, .l-main .soundList__item,  .l-main  .usersList__item,  .l-main .groupsList__item').length) {
             clearInterval(sortableContentLoaded);
 
             init();
