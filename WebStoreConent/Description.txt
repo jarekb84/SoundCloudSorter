@@ -1,0 +1,35 @@
+SoundCloud Sorter will add sorting options to the search results, tags, and user profiles pages on SoundCloud.com.
+
+Currently you can sort by
+
+Sounds - Title, Date, Plays, Likes, Reposts, Comments, Tag
+
+Users - User Name, Sounds, Followers, Online Status, Subscription Type, Follow Status
+
+Groups - Group Name, Sounds, Followers, Join Status
+
+If there are any bugs or feature requests, submit an issue.
+
+v0.3 release 2013-09-08
+
+    + major overhaul of codebase, should allow for easier extensibility
+    + added sorting to user profile tabs, ie following, followers, sets, likes, comments, groups
+    + sorting actions should be relevant to current set of items
+        - ie when looking at a list of users/groups, sort actions for sounds are not shown
+    + removed sorting by Duration, looks like SoundCloud changed how they present this information
+        - need to come up with alternative way of retrieving that data, if at all possible.
+    + minor performance improvements
+
+v0.2 release 2013-08-29
+
+	+ added sorting by duration and tag
+	+ added more icons, and updated button styles.
+		- now when you click on a button an active style is added so user knows which sorting they using.
+	+ sort actions added to tags page
+	+ updated screenshots
+
+v0.1 release 2013-08-25
+
+	+ added basic sorting of title, date, play count, likes, reposts, and comments
+	+ clicking on a button will sort by maximum value descending, so largest values are up top
+		- for date this is changed to show earliest dates up top
