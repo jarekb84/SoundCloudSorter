@@ -1,8 +1,8 @@
 {
 	"name": "SoundCloud Sorter",
-	"version": "0.3.2",
+	"version": "0.3.4",
 	"manifest_version" : 2,
-	"description": "Lets you sort sound cloud search results by various properties.",
+	"description": "Add sorting to SoundCloud lists.",
 	"page_action" :
 	{
 		"default_icon": {
