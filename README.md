@@ -21,8 +21,14 @@ Works best with the Sounds search page. If there are any bugs or feature request
 
 Thanks to [Swader](https://github.com/Swader/ChromeSkel_a) for the chrome extension skeleton.
 
-v0.3 release 2013-09-08
+v0.3.4 release 2013-09-25
 
+    + fixed sorting of groups tab
+    + fixed sorting by subscription type in followers/following tabs
+    + fixed bug where sorting actions showed up on comments tab
+    + addressed some of the issues that prevent sort actions from showing up consistently
+
+v0.3 release 2013-09-08
     + major overhaul of codebase, should allow for easier extensibility
     + added sorting to user profile tabs, ie following, followers, sets, likes, comments, groups
     + sorting actions should be relevant to current set of items
