@@ -515,6 +515,7 @@ chrome.extension.sendMessage({}, function () {
             attachActionEvents(targetElements);
 
             pathHandler(function () {
+                targetElements = new TargetElements();
                 targetElements.getElements();
                 insertSortActions(targetElements);
                 attachActionEvents(targetElements);
