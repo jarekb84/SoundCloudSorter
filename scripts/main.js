@@ -114,8 +114,8 @@ chrome.extension.sendMessage({}, function () {
             case "/groups":
                 this.headerElement = '.userNetworkTop';
                 this.insertMethod = 'after';
-                this.collectionElement = '.groupList';
-                this.listItemElement = '.groupList__item';
+                this.collectionElement = '.groupsList';
+                this.listItemElement = '.groupsList__item';
                 this.object = new Group();
 
                 break;
