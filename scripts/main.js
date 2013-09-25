@@ -499,27 +499,36 @@ chrome.extension.sendMessage({}, function () {
         ];
 
         var $headerElement = $(targetElements.headerElement);
+        var $listElemetns = $(targetElements.listItemElement);
 
-        if ($headerElement.length > 0) {
+        if ($headerElement.length > 0 && $listElemetns.length > 0) {
             $headerElement[targetElements.insertMethod](actionTemplate.join(''));
+
+        } else {
+            setTimeout(function() {
+                insertSortActions(targetElements);
+            }, 500);
         }
     }
 
     function pathHandler(changeFunction) {
         var oldPath = window.location.pathname,
+            oldQueryString = window.location.search,
             detect,
             check;
 
         detect = function () {
-            if (oldPath !== window.location.pathname) {
+            if (oldPath !== window.location.pathname || oldQueryString !== window.location.search ) {
                 oldPath = window.location.pathname;
+                oldQueryString = window.location.search;
+
                 changeFunction();
             }
         };
 
         check = setInterval(function () {
             detect();
-        }, 100);
+        }, 300);
     }
 
     function init() {
