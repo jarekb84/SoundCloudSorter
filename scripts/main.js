@@ -211,6 +211,23 @@ chrome.extension.sendMessage({}, function () {
         };
     }
 
+    User.prototype.getSubscriptionType = function(iconElement){
+        var classes,
+            iconClass = 'zzzzzzz';
+
+        if(iconElement.length){
+            classes = $(iconElement).attr('class').split(' ');
+
+            classes.forEach(function(classPart){
+                if (classPart !== "sc-status-icon-small" && classPart.match( /^sc-status-icon-/ )) {
+                    iconClass= classPart;
+                }
+            });
+        }
+
+        this.subscriptionType.value = iconClass.trim().toLowerCase();
+    };
+
     function Sound() {
         this.element = null;
         this.title = {
@@ -371,7 +388,7 @@ chrome.extension.sendMessage({}, function () {
             user.numberFollowers.value = $row.find('.sc-ministats-followers').children().eq(1).text().replace(new RegExp(",", "g"), '') || 0;
             user.numberSounds.value = $row.find('.sc-ministats-sounds').children().eq(1).text().replace(new RegExp(",", "g"), '') || 0;
             user.onlineStatus.value = $row.find('.sc-status-icon').hasClass('sc-status-icon-online');
-            user.subscriptionType.value = $row.find('.sc-status-icon').text().trim().toLowerCase() || 'zzzzzzz';
+            user.getSubscriptionType($row.find('.userBadge__title [class*="sc-status-icon-"]'));
             user.followingStatus.value = $row.find('.sc-button-follow').hasClass('sc-button-selected');
 
             userList.push(user);
