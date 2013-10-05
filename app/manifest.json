@@ -1,29 +1,29 @@
 {
-	"name": "SoundCloud Sorter",
-	"version": "0.3.4",
-	"manifest_version" : 2,
-	"description": "Add sorting to SoundCloud lists.",
-	"page_action" :
-	{
-		"default_icon": {
-			"19": "img/icons/19.png",
-			"38": "img/icons/38.png"
-		},
-		"default_title" : "SAMPLE_TITLE",
-		"default_popup" : "fragments/popup.html"
-	},
-	"content_scripts": [
-	{
-		"matches": ["*://*.soundcloud.com/*"],
-		"js": ["lib/jquery-2.0.3.min.js","lib/lodash.min.js","scripts/main.js"],
-		"css": ["css/styles.css"],
-		"run_at": "document_idle"
-	}
-	],
-	"icons": {
-		"16": "img/icons/16.png",
-		"48": "img/icons/48.png",
-		"128": "img/icons/128.png"
-	},
-	"options_page" : "fancy-settings/source/index.html"
+    "name": "__MSG_appName__",
+    "version": "0.3.4",
+    "manifest_version": 2,
+    "description": "__MSG_appDescription__",
+    "icons": {
+        "16": "images/icons/16.png",
+        "128": "images/icons/128.png"
+    },
+    "default_locale": "en",
+    "background": {
+        "scripts": [
+            "scripts/background.js"
+        ]
+    },
+  "content_scripts": [
+    {
+      "matches": ["*://*.soundcloud.com/*"],
+      "css": [
+        "styles/main.css"
+      ],
+      "js": [
+        "scripts/contentscript.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ]
 }
