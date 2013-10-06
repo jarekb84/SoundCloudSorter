@@ -129,17 +129,17 @@ module.exports = function (grunt) {
                 }
             }
         },
-        // not used since Uglify task does concat,
-        // but still available if needed
-        /*concat: {
+        concat: {
+            // not used since Uglify task does concat,
+            // but still available if needed
             dist: {}
-        },*/
-        // not enabled since usemin task does concat and uglify
-        // check index.html to edit your build targets
-        // enable this task if you prefer defining your build targets here
-        /*uglify: {
+        },
+        uglify: {
+            // not enabled since usemin task does concat and uglify
+            // check index.html to edit your build targets
+            // enable this task if you prefer defining your build targets here
             dist: {}
-        },*/
+        },
         useminPrepare: {
             options: {
                 dest: '<%= yeoman.dist %>'
@@ -207,9 +207,9 @@ module.exports = function (grunt) {
                 }]
             }
         },
-        // Put files not handled in other tasks here
         copy: {
-            dist: {
+            // Put files not handled in other tasks here
+            prod: {
                 files: [{
                     expand: true,
                     dot: true,
@@ -227,6 +227,15 @@ module.exports = function (grunt) {
                     src: [
                         'generated/*'
                     ]
+                }]
+            },
+            dev: {
+                files:[{
+                    expand: true,
+                    dot: true,
+                    cwd: '<%= yeoman.app %>',
+                    src: ['**'],
+                    dest: '<%= yeoman.dist %>/'
                 }]
             }
         },
@@ -281,7 +290,20 @@ module.exports = function (grunt) {
         'jasmine'
     ]);
 
-    grunt.registerTask('build', [
+    grunt.registerTask('dev', [
+        'clean:dist', //deletes files from dist folder
+        //'chromeManifest:dist', // updates manifest, kicks off concat, cssmin, and uglify on js and css found in content_script block in manifest
+        //'useminPrepare', // if i used options or popup in html, this would find css/js files in them and update the usemin tasks's src/dest options
+        //'concurrent:dist', // runs several longer running task in parrarel, dist does cofee/compass/imgmin/svgmin/htmlmin
+        //'cssmin', // combines files in app/styles to single file in styles.main
+        //'concat', // no settings, since uglify handles concat
+        //'uglify', // no settings since usemin handles concat and uglify
+        'copy:dev', // moves all files from app to dest
+        //'usemin', // minifies css files in destination folder
+        //'compress' // zips up file sin dst and moves to packge dir
+    ]);
+
+    grunt.registerTask('prod', [
         'clean:dist',
         'chromeManifest:dist',
         'useminPrepare',
@@ -289,7 +311,7 @@ module.exports = function (grunt) {
         'cssmin',
         'concat',
         'uglify',
-        'copy',
+        'copy:prod',
         'usemin',
         'compress'
     ]);
@@ -297,6 +319,6 @@ module.exports = function (grunt) {
     grunt.registerTask('default', [
         'jshint',
         'test',
-        'build'
+        'prod'
     ]);
 };

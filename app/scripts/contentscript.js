@@ -1,8 +1,8 @@
 /*global chrome, _*/
 //noinspection JSUnresolvedVariable,JSUnresolvedFunction
 chrome.extension.sendMessage({}, function () {
-    "use strict";
-
+    'use strict';
+ 
     function getCurrentPath (){
         var currentPath = window.location.pathname.toLowerCase();
 
@@ -10,12 +10,12 @@ chrome.extension.sendMessage({}, function () {
         // pattern is /username/sortableSet
         // getting third element, since splitting by / creates three items, first one being blank/null
 
-        if(currentPath.substring(1,7) === "search") {
+        if(currentPath.substring(1,7) === 'search') {
             currentPath = currentPath;
-        } else if (currentPath.substring(1,5) === "tags"){
-            currentPath = "/tags";
+        } else if (currentPath.substring(1,5) === 'tags'){
+            currentPath = '/tags';
         } else {
-            currentPath = "/" + currentPath.split('/')[2];
+            currentPath = '/' + currentPath.split('/')[2];
         }
 
         return currentPath;
@@ -31,17 +31,17 @@ chrome.extension.sendMessage({}, function () {
             if (intVal >= 0) {
                 replace = args[intVal];
             } else if (intVal === -1) {
-                replace = "{";
+                replace = '{';
             } else if (intVal === -2) {
-                replace = "}";
+                replace = '}';
             } else {
-                replace = "";
+                replace = '';
             }
 
             return replace;
         });
     };
-    String.prototype.format.regex = new RegExp("{-?[0-9]+}", "g");
+    String.prototype.format.regex = new RegExp('{-?[0-9]+}', 'g');
 
     function TargetElements() {
         // given the current page user is on, determine which dom elements should be used to
@@ -52,7 +52,7 @@ chrome.extension.sendMessage({}, function () {
         this.headerElement = null; // element to which sorting actions buttons are added to
         this.insertMethod = null; // determines where sorting actions are added to, can be before or after
         this.currentPath = null;
-        this.object = null; // Type of object to use when generating template, sound, group, user
+        this.object = null; // Type of object to use when generating template. ie sound, group, user
     }
 
     TargetElements.prototype.getElements = function() {
@@ -135,6 +135,7 @@ chrome.extension.sendMessage({}, function () {
 
     function Group() {
         this.element = null;
+        this.className = 'Group',
         this.groupName = {
             value : '',
             friendlyName: 'Name',
@@ -167,7 +168,8 @@ chrome.extension.sendMessage({}, function () {
 
     function User() {
         this.element = null;
-        this.userName ={
+        this.className = 'User',
+        this.userName = {
             value : '',
             friendlyName: 'Name',
             type : 'string',
@@ -230,6 +232,7 @@ chrome.extension.sendMessage({}, function () {
 
     function Sound() {
         this.element = null;
+        this.className = 'Sound',
         this.title = {
             value : '',
             friendlyName: 'Title',
@@ -454,7 +457,9 @@ chrome.extension.sendMessage({}, function () {
                 lastSortedBy = updateLastSortedBy(this),
                 itemList = [];
 
-            switch(targetElements.object.constructor.name){
+            // had to add hardcoded class name rather then using object.constructor.name
+            // otherwise minified version broke this switch statement
+            switch(targetElements.object.className){
                 case "Sound":
                     populateSoundList(itemList, targetElements);
                     break;
@@ -483,7 +488,7 @@ chrome.extension.sendMessage({}, function () {
 
         var obj = targetElements.object;
         for (var property in obj) {
-            if(obj.hasOwnProperty(property) && property !== 'element'){
+            if(obj.hasOwnProperty(property) && property !== 'element' && property !== 'className'){
                 var action = '<button data-lastSortedBy="{0}" data-defaultSort={0} data-type="{1}" data-itemProperty="{2}" class="sortAction sc-button sc-button-small sc-button-responsive sc-button-title {3}">{4}</button>';
                 action = action.format(obj[property].defaultSort, obj[property].type, property, obj[property].cssClass, obj[property].friendlyName);
                 actions.push(action);

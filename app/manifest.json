@@ -1,6 +1,6 @@
 {
     "name": "__MSG_appName__",
-    "version": "0.3.4",
+    "version": "0.4.0.8",
     "manifest_version": 2,
     "description": "__MSG_appDescription__",
     "icons": {
@@ -13,17 +13,21 @@
             "scripts/background.js"
         ]
     },
-  "content_scripts": [
-    {
-      "matches": ["*://*.soundcloud.com/*"],
-      "css": [
-        "styles/main.css"
-      ],
-      "js": [
-        "scripts/contentscript.js"
-      ],
-      "run_at": "document_idle",
-      "all_frames": false
-    }
-  ]
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*.soundcloud.com/*"
+            ],
+            "css": [
+                "styles/main.css"
+            ],
+            "js": [
+                "scripts/contentscript.js",
+                "bower_components/jquery/jquery.min.js",
+                "bower_components/lodash/dist/lodash.min.js"
+            ],
+            "run_at": "document_idle",
+            "all_frames": false
+        }
+    ]
 }
