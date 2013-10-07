@@ -1,5 +1,5 @@
 /* global define */
-define(['/bower_components/jquery/jquery', './models/group'], function($, Group) {
+define(['../../bower_components/jquery/jquery.js', '/models/group.js'], function($, Group) {
     'use strict';
 
     return {

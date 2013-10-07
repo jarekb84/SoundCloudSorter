@@ -1,5 +1,5 @@
 /* global define */
-define(['/bower_components/jquery/jquery','/bower_components/lodash/dist/lodash' ], function($, _) {
+define(['../../bower_components/jquery/jquery.js','../../bower_components/lodash/dist/lodash.js' ], function($, _) {
 	'use strict';
 
 	return {

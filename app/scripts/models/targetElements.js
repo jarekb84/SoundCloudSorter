@@ -1,5 +1,5 @@
 /* global define */
-define(['./models/sound','./models/user','./models/group','./services/pathService'], function(Sound, User, Group, pathService) {
+define(['/models/sound.js','/models/user.js','/models/group.js','/services/pathService.js'], function(Sound, User, Group, pathService) {
     'use strict';
 
     function TargetElements() {

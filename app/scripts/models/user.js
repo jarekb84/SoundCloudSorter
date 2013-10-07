@@ -1,5 +1,5 @@
 /* global define */
-define(['/bower_components/jquery/jquery'], function($) {
+define(['../../bower_components/jquery/jquery.js'], function($) {
     'use strict';
 
     function User() {

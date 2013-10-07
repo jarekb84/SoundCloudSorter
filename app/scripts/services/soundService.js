@@ -1,5 +1,5 @@
 /* global define */
-define(['/bower_components/jquery/jquery', './models/sound'], function($, Sound) {
+define(['../../bower_components/jquery/jquery.js', '/models/sound.js'], function($, Sound) {
     'use strict';
 
     return {

@@ -1,5 +1,5 @@
 /* global define */
-define(['/bower_components/jquery/jquery', './services/soundSerice', './services/userService', './services/groupService','./controllers/sortableItemsCtrl'], function($, SoundService, UserService, GroupService, SortableItemsCtrl) {
+define(['../../bower_components/jquery/jquery.js', '/services/soundService.js', '/services/userService.js', '/services/groupService.js','/controllers/sortableItemsCtrl.js'], function($, SoundService, UserService, GroupService, SortableItemsCtrl) {
 	'use strict';
 
 	function updateLastSortedBy(element) {

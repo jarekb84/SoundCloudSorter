@@ -280,6 +280,25 @@ module.exports = function (grunt) {
                     dest: ''
                 }]
             }
+        },
+        requirejs: {
+            scripts: {
+                options: {
+                    baseUrl: '<%= yeoman.app %>/scripts/',
+                    findNestedDependencies: true,
+                    mainConfigFile: '<%= yeoman.app %>/scripts/main.js',
+                    name: 'main',
+                    out: '<%= yeoman.app %>/scripts/contentscript.js',
+                    preserveLicenseComments: false,
+                    useStrict: true,
+                    optimize:'none',
+                    paths: {
+                        requireLib: '../bower_components/requirejs/require'
+                    },
+                    include: 'requireLib'
+
+                }
+            }
         }
     });
 
@@ -292,6 +311,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('dev', [
         'clean:dist', //deletes files from dist folder
+        'requirejs', // runs requirejs optimizer starting with main.js, walking dependancy tree, and creating contatinated file into contentscript.js
         //'chromeManifest:dist', // updates manifest, kicks off concat, cssmin, and uglify on js and css found in content_script block in manifest
         //'useminPrepare', // if i used options or popup in html, this would find css/js files in them and update the usemin tasks's src/dest options
         //'concurrent:dist', // runs several longer running task in parrarel, dist does cofee/compass/imgmin/svgmin/htmlmin
@@ -305,6 +325,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('prod', [
         'clean:dist',
+        'requirejs',
         'chromeManifest:dist',
         'useminPrepare',
         'concurrent:dist',
