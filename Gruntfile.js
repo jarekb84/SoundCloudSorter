@@ -249,8 +249,7 @@ module.exports = function (grunt) {
                 'compass'
             ],
             dist: [
-                'coffee',
-                'compass:dist',
+                'coffee',                
                 'imagemin',
                 'svgmin',
                 'htmlmin'
@@ -293,7 +292,9 @@ module.exports = function (grunt) {
                     useStrict: true,
                     optimize:'none',
                     paths: {
-                        requireLib: '../bower_components/requirejs/require'
+                        requireLib: '../bower_components/requirejs/require',
+                        'jquery': '../bower_components/jquery/jquery.min',
+                        'lodash': '../bower_components/lodash/dist/lodash.min'
                     },
                     include: 'requireLib'
 

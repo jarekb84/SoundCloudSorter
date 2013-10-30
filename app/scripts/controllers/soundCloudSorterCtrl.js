@@ -1,5 +1,5 @@
 /* global define */
-define(['../../bower_components/jquery/jquery.js', '/services/pathService.js', '/models/targetElements.js', '/controllers/sortActionsCtrl.js'], function($, PathService, TargetElements, SortActionsCtrl) {
+define(['jquery', 'services/pathService', 'models/targetElements', 'controllers/sortActionsCtrl'], function($, PathService, TargetElements, SortActionsCtrl) {
 	'use strict';
 
 	return {
